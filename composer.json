@@ -1,8 +1,8 @@
 {
   "name": "voyager-appcenter-crashes",
   "description": "See error report from https://appcenter.ms/",
-  "tags": [
-    "voyager"
+  "keywords": [
+    "laravel", "voyager"
   ],
   "require": {
     "guzzlehttp/guzzle": "^6.3",
