@@ -1,6 +1,9 @@
 {
   "name": "voyager-appcenter-crashes",
   "description": "See error report from https://appcenter.ms/",
+  "tags": [
+    "voyager"
+  ],
   "require": {
     "guzzlehttp/guzzle": "^6.3",
     "larapack/hooks": "~1.0"
