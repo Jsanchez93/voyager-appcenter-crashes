@@ -18,18 +18,21 @@ class AppcenterErrorController extends \App\Http\Controllers\Controller
       abort(403, 'Appcenter credentials not provided.');
     }
     
-    
+    $apps = explode(',', $appName);
+    $data = array();    
 
-    $client = new Client(['base_uri' => 'https://api.appcenter.ms/v0.1/']);
-    $response = $client->request('GET', "apps/$owner/$appName/crash_groups", [
-      'headers' => [
-        'Accept'        => 'application/json',              
-        'X-API-Token'   => $apiToken,
-        'Content-Type'  => 'application/json'
-      ],
-      'query' => ['last_occurrence_from' => $lastOccurrence_from]
-    ]);
-    $data = json_decode($response->getBody());
+    foreach ($apps as $value) {
+      $client = new Client(['base_uri' => 'https://api.appcenter.ms/v0.1/']);
+      $response = $client->request('GET', "apps/$owner/$value/crash_groups", [
+        'headers' => [
+          'Accept'        => 'application/json',              
+          'X-API-Token'   => $apiToken,
+          'Content-Type'  => 'application/json'
+        ],
+        'query' => ['last_occurrence_from' => $lastOccurrence_from]
+      ]);
+      $data[$value] = json_decode($response->getBody());
+    }
    
     return view('crashes::browse', compact('data'));
   }
