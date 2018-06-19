@@ -15,7 +15,7 @@ class AppcenterErrorController extends \App\Http\Controllers\Controller
     $apiToken = env('APPCENTER_API_TOKEN', null);
     $lastOccurrence_from = Carbon::createFromFormat('d-m-Y', env('APPCENTER_LAST_OCCURRENCE_FROM', '01-01-2000'))->toAtomString();
     if(!$owner || !$appName || !$apiToken){
-      abort(404);
+      abort(403, 'Appcenter credentials not provided.');
     }
     
     
