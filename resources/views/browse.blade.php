@@ -16,56 +16,68 @@
 
 @section('content')
     <div class="page-content container-fluid" id="voyagerBreadEditAdd">
-        <div class="row">
-            
-                
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <div class="table-responsive">
-                    <table id="dataTable" class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>App version</th>
-                                <th>Impacted users</th>
-                                <th>Reason</th>
-                                <th>Last occurrence</th>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <tbody>                            
-                            @foreach ($data->crash_groups as $info)
-                            <tr>
-                                <td class="text-center">{{ $info->app_version }}</td>
-                                <td class="text-center">{{ $info->impacted_users }}</td>
-                                <td>{{ $info->crash_reason }}</td>
-                                <td>{{ \Carbon\Carbon::parse($info->last_occurrence)->format('d/m/Y - h:i:sA') }}</td>
-                                <td><a data-id='{{ $info->crash_group_id }}' href="#!" class="btn-sm btn-primary view_report">More</a></td>
-                            </tr>
-                            @endforeach  
-                        </tbody>
-                    </table>
+        
+        @foreach($datas as $key => $data)
+        <div class="panel panel-primary panel-bordered">
+            <div class="panel-heading">
+                <h3 class="panel-title panel-icon"><i class="voyager-phone"></i> {{$key}}</h3>
+                <div class="panel-actions">
+                    <a class="panel-action panel-collapsed voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <div class="show-crash hide">
-                    <h3>General</h3>
-                    <div class="general">
-                        <p><span>App version:       </span><span class="appG"></span></p>
-                        <p><span>Build:             </span><span class="buildG"></span></p>
-                        <p><span>Count:             </span><span class="countG"></span></p>
-                        <p><span>Impacted users:    </span><span class="impactedG"></span></p>                        
-                        <p><span>First occurrence:  </span><span class="firstG"></span></p>
-                        <p><span>Last occurrence:   </span><span class="lastG"></span></p>
+            <div class="panel-body collapse">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="table-responsive">
+                            <table id="dataTable-{{$key}}" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>App version</th>
+                                        <th>Impacted users</th>
+                                        <th>Reason</th>
+                                        <th>Last occurrence</th>
+                                        <td></td>
+                                    </tr>
+                                </thead>
+                                <tbody>                            
+                                    @foreach ($data->crash_groups as $info)
+                                    <tr>
+                                        <td class="text-center">{{ $info->app_version }}</td>
+                                        <td class="text-center">{{ $info->impacted_users }}</td>
+                                        <td>{{ $info->crash_reason }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($info->last_occurrence)->format('d/m/Y - h:i:sA') }}</td>
+                                        <td><a data-id='{{ $info->crash_group_id }}' href="#!" class="btn-sm btn-primary view_report">More</a></td>
+                                    </tr>
+                                    @endforeach  
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <h2><span>Reasons (devs)</span></h2>
-                    <div class="reasons">
-                        <p><span class="fatalR"></span></p>
-                        <p><span>Crash reason: </span><span class="crashR"></span></p>
-                        <div class="reasons_frame"></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="show-crash hide">
+                            <h3>General</h3>
+                            <div class="general">
+                                <p><span>App version:       </span><span class="appG"></span></p>
+                                <p><span>Build:             </span><span class="buildG"></span></p>
+                                <p><span>Count:             </span><span class="countG"></span></p>
+                                <p><span>Impacted users:    </span><span class="impactedG"></span></p>                        
+                                <p><span>First occurrence:  </span><span class="firstG"></span></p>
+                                <p><span>Last occurrence:   </span><span class="lastG"></span></p>
+                            </div>
+                            <h2><span>Reasons (devs)</span></h2>
+                            <div class="reasons">
+                                <p><span class="fatalR"></span></p>
+                                <p><span>Crash reason: </span><span class="crashR"></span></p>
+                                <div class="reasons_frame"></div>
+                            </div>
+                            
+                        </div>
                     </div>
-                    
-                </div>
+                </div><!-- .row -->
             </div>
-        </div><!-- .row -->
+        </div>
+        @endforeach
+
     </div><!-- .page-content -->
     
 @stop
@@ -77,14 +89,16 @@
 
     <!-- DataTables -->        
     <script>
-        $(document).ready(function () {            
-            var table = $('#dataTable').DataTable({!! json_encode(
+        $(document).ready(function () {
+            @foreach($datas as $key => $data)
+            var table = $('#dataTable-{{$key}}').DataTable({!! json_encode(
                 array_merge([
                     "order" => [],
                     "language" => __('voyager.datatable'),
                 ],
                 config('voyager.dashboard.data_tables', []))
             , true) !!});
+            @endforeach
 
             var data = {};
             @foreach ($data->crash_groups as $info)

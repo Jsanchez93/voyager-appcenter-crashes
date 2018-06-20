@@ -19,7 +19,7 @@ class AppcenterErrorController extends \App\Http\Controllers\Controller
     }
     
     $apps = explode(',', $appName);
-    $data = array();    
+    $datas = array();    
 
     foreach ($apps as $value) {
       $client = new Client(['base_uri' => 'https://api.appcenter.ms/v0.1/']);
@@ -31,9 +31,9 @@ class AppcenterErrorController extends \App\Http\Controllers\Controller
         ],
         'query' => ['last_occurrence_from' => $lastOccurrence_from]
       ]);
-      $data[$value] = json_decode($response->getBody());
+      $datas[$value] = json_decode($response->getBody());
     }
    
-    return view('crashes::browse', compact('data'));
+    return view('crashes::browse', compact('datas'));
   }
 }
