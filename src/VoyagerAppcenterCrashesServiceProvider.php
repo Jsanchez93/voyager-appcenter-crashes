@@ -48,8 +48,8 @@ class VoyagerAppcenterCrashesServiceProvider extends ServiceProvider
     
     protected function ensurePermissionExist(){
         $permissions = [
-        	Permission::firstOrNew(['key' => 'browse_polls', 'table_name' => 'crashes']),
-        	Permission::firstOrNew(['key' => 'read_polls', 'table_name' => 'crashes']),
+        	Permission::firstOrNew(['key' => 'browse_crashes', 'table_name' => 'crashes']),
+        	Permission::firstOrNew(['key' => 'read_crashes', 'table_name' => 'crashes']),
         ];
 
         foreach($permissions as $permission){
