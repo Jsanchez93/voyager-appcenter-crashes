@@ -8,8 +8,7 @@ use Carbon\Carbon;
 
 class AppcenterErrorController extends \App\Http\Controllers\Controller
 {
-  public function browse(Request $request){
-         
+  public function browse(Request $request){         
     $owner = env('APPCENTER_OWNER_APP', null);
     $appName = env('APPCENTER_APP_NAME', null);
     $apiToken = env('APPCENTER_API_TOKEN', null);
